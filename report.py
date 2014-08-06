@@ -77,6 +77,4 @@ class Report(object):
 
         ret = _set_template_content(ret, "PROBLEMS_CONTENT", prob)
 
-        print ret
-
         return ret.encode("utf8")
