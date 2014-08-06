@@ -33,5 +33,4 @@ Dependencies
 ------------
 
 *   python 2.7
-*   PyLaTex     `pip install pylatex`
-*   PyTex       `pip install pytex`
+*   xelatex
