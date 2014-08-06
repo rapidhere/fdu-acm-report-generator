@@ -1,0 +1,44 @@
+\documentclass[a4paper, 11pt, nofonts, nocap, fancyhdr]{ctexart}
+
+\usepackage[margin=60pt]{geometry}
+
+\setCJKmainfont[BoldFont={FZHTK--GBK1-0}, ItalicFont={FZHTK--GBK1-0}]{FZSSK--GBK1-0}
+\setCJKsansfont{FZHTK--GBK1-0}
+\setCJKmonofont{FZSSK--GBK1-0}
+
+\CTEXoptions[today=small]
+
+\pagestyle{plain}
+
+% \fancyhead[L]{\small{team name}}
+% \fancyhead[C]{\small{FSTC 2014 - 05 - 训练报告}}
+% \fancyhead[R]{\small{2014年8月2日}}
+
+\renewcommand{\thesubsubsection}{Problem \Alph{subsubsection}.}
+\newcommand{\problem}[1]{\subsubsection{#1}}
+
+\title{Fudan ACM-ICPC Summer Training Camp 2014\\第{%CONTEST_NUMBER%}场训练报告}
+\author{{%TEAM_NAME%}}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\section{概况}
+
+{%SUMMARY_CONTENT%}
+
+\section{训练过程}
+
+{%PROCESS_CONTENT%}
+
+\section{解题报告}
+
+{%PROBLEMS_CONTENT%}
+
+\section{总结}
+
+{%SUMMARY_CONTENT%}
+
+\end{document}

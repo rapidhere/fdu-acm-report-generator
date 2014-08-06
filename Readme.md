@@ -28,3 +28,10 @@ How to manage source
 	|
 	|-----summary.md	# section 总结
 ```
+
+Dependencies
+------------
+
+*   python 2.7
+*   PyLaTex     `pip install pylatex`
+*   PyTex       `pip install pytex`
