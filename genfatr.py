@@ -35,16 +35,14 @@ def discover():
             exit(1)
 
         for p in _list:
-            sol_file = os.path.join(dpath, p + ".md")
             json_file = os.path.join(dpath, p + ".json")
-
-            if not os.path.isfile(sol_file):
-                sys.stderr.write("Cannot find solution file for problem `%s`\n" % p)
 
             if not os.path.isfile(json_file):
                 sys.stderr.write("Cannot find json file for problem `%s`\n" % p)
+
+            _json = simplejson.load(file(json_file))
         
-            rep.add_problem(simplejson.load(file(json_file)), file(sol_file).read().decode("utf8"))
+            rep.add_problem(_json, _json["solution"])
 
     for f in os.listdir(WORK_DIR):
         fpath = os.path.join(WORK_DIR, f)
@@ -73,11 +71,14 @@ def discover():
 def make():
     _latex = rep.generate_latex()
 
-    lfile = rep.get_file_name() + ".tex"
+    if not os.path.isdir(DIST_DIR):
+        os.mkdir(DIST_DIR)
+
+    lfile = os.path.join(DIST_DIR, rep.get_file_name() + ".tex")
     file(lfile, "w").write(_latex)
 
     import subprocess
-    p = subprocess.Popen(["xelatex", lfile])
+    p = subprocess.Popen(["xelatex", lfile, "-output-directory=%s" % DIST_DIR])
 
     p.wait()
 
