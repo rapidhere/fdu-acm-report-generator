@@ -20,9 +20,7 @@ How to manage source
 	|-----problems/		# section 题解报告
 	|	 |
     |    |-----meta.json        # Problems list, in order
-	|	 |-----problemA.json	# title, members, situation
-	|	 |-----problemA.md		# the solution of problemA
-	|	 |-----problemB.json
+	|	 |-----problemA.md		# the solution file of problemA
 	|	 |-----problemB.md
 	|	 |...
 	|

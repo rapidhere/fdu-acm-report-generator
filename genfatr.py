@@ -13,12 +13,11 @@ if not os.path.isdir(WORK_DIR):
     sys.stderr.write("Wrong working directory!\n")
     exit(1)
 
-DIST_DIR = os.path.join(WORK_DIR, "dist")
-
 rep = Report()
-options = {}
 
+# discover the directory
 def discover():
+    # discover the problem problems
     def discover_problems(dpath):
         meta_file = os.path.join(dpath, "meta.json")
 
@@ -26,7 +25,10 @@ def discover():
             sys.stderr.write("Cannot find problem meta file\n")
             exit(1)
 
-        _meta = simplejson.load(file(meta_file))
+        try:
+            _meta = simplejson.load(file(meta_file))
+        except Exception as e:
+            raise Exception("Failed to load problem json file: %s" % str(e))
 
         _list = _meta.get("list", None)
 
@@ -35,29 +37,28 @@ def discover():
             exit(1)
 
         for p in _list:
-            json_file = os.path.join(dpath, p + ".json")
+            pfile = os.path.join(dpath, p + ".md")
 
-            if not os.path.isfile(json_file):
-                sys.stderr.write("Cannot find json file for problem `%s`\n" % p)
+            if not os.path.isfile(pfile):
+                sys.stderr.write("Cannot find md file for problem `%s`\n" % p)
+                exit(1)
 
-            _json = simplejson.load(file(json_file))
-        
-            rep.add_problem(_json, _json["solution"])
+            rep.add_problem(pfile, file(pfile).read())
 
+    # List up the directory
     for f in os.listdir(WORK_DIR):
         fpath = os.path.join(WORK_DIR, f)
 
         if os.path.isfile(fpath):
             if f == "meta.json":
                 _meta = simplejson.load(file(fpath))
-                options = _meta.get("options", {})
                 rep.update_meta(_meta)
             elif f == "overview.md":
-                rep.set_overview(file(fpath).read().decode("utf8"))
+                rep.set_section("overview", file(fpath).read())
             elif f == "process.md":
-                rep.set_process(file(fpath).read().decode("utf8"))
+                rep.set_section("process", file(fpath).read())
             elif f == "summary.md":
-                rep.set_summary(file(fpath).read().decode("utf8"))
+                rep.set_section("summary", file(fpath).read())
             else:
                 sys.stderr.write("Warning: Unkown section file: %s\n" % fpath)
         elif os.path.isdir(fpath):
@@ -68,17 +69,15 @@ def discover():
         else:
             sys.stderr.write("Warning: Unkown file type: %s\n" % fpath)
 
+# use xelatex to compile
 def make():
     _latex = rep.generate_latex()
 
-    if not os.path.isdir(DIST_DIR):
-        os.mkdir(DIST_DIR)
-
-    lfile = os.path.join(DIST_DIR, rep.get_file_name() + ".tex")
+    lfile = os.path.join(WORK_DIR, rep.get_report_file_name() + ".tex")
     file(lfile, "w").write(_latex)
 
     import subprocess
-    p = subprocess.Popen(["xelatex", lfile, "-output-directory=%s" % DIST_DIR])
+    p = subprocess.Popen(["xelatex", lfile])
 
     p.wait()
 
