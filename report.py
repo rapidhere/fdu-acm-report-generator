@@ -82,7 +82,7 @@ class Report(object):
         
         # just use simple re
         def _get(sname):
-            ret = re.search("{%% *%s *: *(.+)? *%%}" % sname, problem)
+            ret = re.search("{%% *%s *: *(.+?) *%%}" % sname, problem, flags=re.S)
 
             if not ret:
                 return ""
@@ -122,7 +122,7 @@ class Report(object):
 
         # set up the template
         ret = self._set_template_content(ret, "CONTEST_NUMBER",      self.get_contest_number())
-        ret = self._set_template_content(ret, "TEAM_NAME",           self.get_contest_number())
+        ret = self._set_template_content(ret, "TEAM_NAME",           self.get_team_name())
         ret = self._set_template_content(ret, "OVERVIEW_CONTENT",    self._sections["overview"])
         ret = self._set_template_content(ret, "PROCESS_CONTENT",     self._sections["process"])
         ret = self._set_template_content(ret, "SUMMARY_CONTENT",     self._sections["summary"])
